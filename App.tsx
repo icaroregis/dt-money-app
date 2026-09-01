@@ -1,8 +1,8 @@
-import { Login } from './src/screens/login';
+import Routes from '@/routes';
 import './src/styles/global.css';
 
 export default function App() {
   return (
-    <Login />
+    <Routes />
   );
 }
