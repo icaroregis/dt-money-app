@@ -17,7 +17,7 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.dtmoneyapp",
+      "package": "com.icaro.dtmoneyapp",
       "userInterfaceStyle": "dark"
     },
     "web": {

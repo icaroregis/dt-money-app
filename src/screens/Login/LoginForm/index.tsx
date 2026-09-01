@@ -14,15 +14,19 @@ export const LoginForm = () => {
       <AppInput
         control={control}
         name="email"
-        label="Email"
+        label="EMAIL"
         placeholder="mail@example.com"
+        leftIconName="mail-outline"
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
       <AppInput
         control={control}
         name="password"
-        label="Password"
-        secureTextEntry={true}
+        label="SENHA"
         placeholder="Enter your password"
+        leftIconName="lock-outline"
+        secureTextEntry
       />
     </>
   );

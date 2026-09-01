@@ -1,8 +1,8 @@
 
-import { DismissKeyboardView } from "@/components/DismissKeyboardView";
-import { colors } from "@/shared/colors";
+import { LoginForm } from "./LoginForm";
 import { useNavigation } from "@react-navigation/native";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import { DismissKeyboardView } from "@/components/DismissKeyboardView";
 
 export const Login = () => {
   const navigation = useNavigation<any>();
@@ -11,7 +11,7 @@ export const Login = () => {
     <DismissKeyboardView>
       <View className="flex-1 w-full px-8 py-12 justify-center gap-16">
         {/* Logo Placeholder */}
-        <View className="items-center">
+        <View className="flex-row items-center justify-center gap-4">
           <Text className="text-white text-3xl font-bold">DT Money</Text>
         </View>
 
@@ -19,32 +19,7 @@ export const Login = () => {
         <View className="w-full gap-[42px]">
           {/* Inputs Container */}
           <View className="w-full gap-5">
-            {/* Input Email */}
-            <View className="gap-2">
-              <Text className="text-gray-300 text-xs font-medium uppercase">Email</Text>
-              <View className="h-12 w-full flex-row items-center border border-[#3D3D3D] rounded-md px-4 bg-background-primary">
-                <TextInput
-                  className="flex-1 text-base text-white"
-                  placeholder="Digite seu email"
-                  placeholderTextColor={colors.gray[700]}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                />
-              </View>
-            </View>
-
-            {/* Input Senha */}
-            <View className="gap-2">
-              <Text className="text-gray-300 text-xs font-medium uppercase">Senha</Text>
-              <View className="h-12 w-full flex-row items-center border border-[#3D3D3D] rounded-md px-4 bg-background-primary">
-                <TextInput
-                  className="flex-1 text-base text-white"
-                  placeholder="Sua senha"
-                  placeholderTextColor={colors.gray[700]}
-                  secureTextEntry
-                />
-              </View>
-            </View>
+            <LoginForm />
           </View>
 
           {/* Button Logar */}
