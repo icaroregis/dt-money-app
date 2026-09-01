@@ -1,5 +1,6 @@
 
 import { LoginForm } from "./LoginForm";
+import { AuthHeader } from "@/components/AuthHeader";
 import { useNavigation } from "@react-navigation/native";
 import { Text, TouchableOpacity, View } from "react-native";
 import { DismissKeyboardView } from "@/components/DismissKeyboardView";
@@ -12,7 +13,7 @@ export const Login = () => {
       <View className="flex-1 w-full px-8 py-12 justify-center gap-16">
         {/* Logo Placeholder */}
         <View className="flex-row items-center justify-center gap-4">
-          <Text className="text-white text-3xl font-bold">DT Money</Text>
+          <AuthHeader />
         </View>
 
         {/* Form Container */}
