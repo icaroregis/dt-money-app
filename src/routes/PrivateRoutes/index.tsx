@@ -8,7 +8,7 @@ export type PrivateStackParamsList = {
 export const PrivateRoutes = () => {
   const PrivateStack = createStackNavigator<PrivateStackParamsList>();
   return (
-    <PrivateStack.Navigator screenOptions={{ headerShown: false }}>
+    <PrivateStack.Navigator>
       <PrivateStack.Screen name="Home" component={Home} />
     </PrivateStack.Navigator>
   );
