@@ -1,12 +1,12 @@
+import { View } from "react-native";
 import { RegisterForm } from "./RegisterForm";
-import { View, ScrollView } from "react-native";
 import { AuthHeader } from "@/components/AuthHeader";
 import { DismissKeyboardView } from "@/components/DismissKeyboardView";
 
 export const Register = () => {
   return (
     <DismissKeyboardView>
-      <ScrollView className="flex-1 w-full" contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 32, paddingVertical: 48, justifyContent: 'center', gap: 64 }}>
+      <View className="flex-1 w-full px-8 py-12 justify-center gap-16">
         {/* Logo Placeholder */}
         <View className="flex-row items-center justify-center gap-4">
           <AuthHeader />
@@ -19,7 +19,7 @@ export const Register = () => {
             <RegisterForm />
           </View>
         </View>
-      </ScrollView>
+      </View>
     </DismissKeyboardView>
   );
 };
