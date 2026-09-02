@@ -33,7 +33,7 @@ export const AppInput = <T extends FieldValues>({
     <Controller
       control={control}
       name={name}
-      render={({ field: { onChange, value } }) => (
+      render={({ field: { onChange, value }, fieldState: { error } }) => (
         <View className="w-full mt-4">
           {label && <Text className={cn("mb-2 mt-3 text-base", isFocused ? "text-accent-brand" : "text-gray-500")}>{label}</Text>}
           <TouchableOpacity

@@ -1,9 +1,11 @@
-import { AppButton } from "@/components/AppButton";
+import { Text, View } from "react-native";
+import { loginSchema } from "./schema";
+import { useForm } from "react-hook-form";
 import { AppInput } from "@/components/AppInput";
+import { AppButton } from "@/components/AppButton";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { useForm } from "react-hook-form";
-import { Text, View } from "react-native";
 
 export interface LoginFormValues {
   email: string;
@@ -11,8 +13,16 @@ export interface LoginFormValues {
 }
 
 export const LoginForm = () => {
-  const { control, handleSubmit, formState: { isSubmitting } } = useForm<LoginFormValues>();
+  const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormValues>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    resolver: yupResolver(loginSchema),
+  });
+  console.log(errors);
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>();
+  const onSubmit = () => { }
 
   return (
     <>
@@ -34,7 +44,7 @@ export const LoginForm = () => {
         secureTextEntry
       />
       <View className="w-full flex-1 justify-between gap-4 mt-8 mb-6 min-h-[250px]">
-        <AppButton iconName="arrow-forward">Logar</AppButton>
+        <AppButton onPress={handleSubmit(onSubmit)} iconName="arrow-forward">Logar</AppButton>
         <View>
           <Text className="text-start text-base text-gray-300 mb-6">Ainda não tem uma conta?</Text>
           <AppButton iconName="arrow-forward" mode="outline" onPress={() => navigation.navigate("Register")}>Cadastrar</AppButton>
