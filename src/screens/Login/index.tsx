@@ -22,28 +22,6 @@ export const Login = () => {
           <View className="w-full gap-5">
             <LoginForm />
           </View>
-
-          {/* Button Logar */}
-          <TouchableOpacity
-            className="h-[57px] w-full bg-accent-brand rounded-md flex-row items-center justify-center"
-            activeOpacity={0.8}
-            onPress={() => console.log('Logar')}
-          >
-            <Text className="text-white text-base font-medium">Logar</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Sign Up Container */}
-        <View className="w-full gap-5 items-center mt-4">
-          <Text className="text-gray-300 text-base">Ainda não tem uma conta?</Text>
-
-          <TouchableOpacity
-            className="h-[57px] w-full border border-accent-brand rounded-md flex-row items-center justify-center"
-            activeOpacity={0.8}
-            onPress={() => navigation?.navigate('Register')}
-          >
-            <Text className="text-accent-brand text-base font-medium">Cadastrar</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </DismissKeyboardView>
