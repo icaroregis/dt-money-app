@@ -1,13 +1,10 @@
 
+import { View } from "react-native";
 import { LoginForm } from "./LoginForm";
 import { AuthHeader } from "@/components/AuthHeader";
-import { useNavigation } from "@react-navigation/native";
-import { Text, TouchableOpacity, View } from "react-native";
 import { DismissKeyboardView } from "@/components/DismissKeyboardView";
 
 export const Login = () => {
-  const navigation = useNavigation<any>();
-
   return (
     <DismissKeyboardView>
       <View className="flex-1 w-full px-8 py-12 justify-center gap-16">
