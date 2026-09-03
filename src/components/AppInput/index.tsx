@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 import { colors } from "@/shared/colors";
+import { ErrorMessage } from "../ErrorMessage";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import { Text, TextInput, TextInputProps, TouchableOpacity, View } from "react-native";
@@ -81,6 +82,11 @@ export const AppInput = <T extends FieldValues>({
               </TouchableOpacity>
             )}
           </TouchableOpacity>
+          {error && (
+            <ErrorMessage>
+              {error.message}
+            </ErrorMessage>
+          )}
         </View>
       )}
     />
