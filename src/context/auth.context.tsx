@@ -20,6 +20,7 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const handleAuthenticate = useCallback(async (params: LoginFormValues) => {
     const { user, token } = await AuthService.authenticate(params);
+    console.log(user, token);
     setUser(user);
     setToken(token);
   }, []);

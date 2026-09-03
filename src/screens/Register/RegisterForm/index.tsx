@@ -4,6 +4,7 @@ import { registerSchema } from "./schema";
 import { AppInput } from "@/components/AppInput";
 import { AppButton } from "@/components/AppButton";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { AxiosError } from "axios";
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 
@@ -25,7 +26,7 @@ export const RegisterForm = () => {
     resolver: yupResolver(registerSchema),
   });
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>();
-  const onSubmit = () => { }
+  const onSubmit = (data: RegisterFormValues) => { }
 
   return (
     <>

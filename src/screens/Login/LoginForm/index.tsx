@@ -1,4 +1,5 @@
 import { Text, View } from "react-native";
+import { AxiosError } from "axios";
 import { loginSchema } from "./schema";
 import { useForm } from "react-hook-form";
 import { AppInput } from "@/components/AppInput";
@@ -6,6 +7,7 @@ import { AppButton } from "@/components/AppButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { useAuthContext } from "@/context/auth.context";
 
 export interface LoginFormValues {
   email: string;
@@ -20,8 +22,22 @@ export const LoginForm = () => {
     },
     resolver: yupResolver(loginSchema),
   });
+
+  const { handleAuthenticate } = useAuthContext();
+
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>();
-  const onSubmit = () => { }
+
+  const onSubmit = async (data: LoginFormValues) => {
+    try {
+      await handleAuthenticate(data);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log("Erro Axios:", error.message, error.response?.data);
+      } else {
+        console.log("Erro genérico:", error);
+      }
+    }
+  }
 
   return (
     <>
