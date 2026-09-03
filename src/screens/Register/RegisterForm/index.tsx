@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { AxiosError } from "axios";
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { useAuthContext } from "@/context/auth.context";
 
 export interface RegisterFormValues {
   name: string;
@@ -25,8 +26,22 @@ export const RegisterForm = () => {
     },
     resolver: yupResolver(registerSchema),
   });
+
+  const { handleRegister } = useAuthContext();
+
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>();
-  const onSubmit = (data: RegisterFormValues) => { }
+
+  const onSubmit = async (data: RegisterFormValues) => {
+    try {
+      await handleRegister(data);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log("Erro Axios:", error.message, error.response?.data);
+      } else {
+        console.log("Erro genérico:", error);
+      }
+    }
+  }
 
   return (
     <>

@@ -6,15 +6,17 @@ import { PrivateRoutes } from './PrivateRoutes';
 
 //Public Routes
 import { PublicRoutes } from './PublicRoutes';
+import { useAuthContext } from '@/context/auth.context';
 
 export default function Routes() {
-  const [user, setUser] = useState(undefined);
+  const { user, token } = useAuthContext();
+
   const Routes = useCallback(() => {
-    if (user) {
-      return <PrivateRoutes />;
+    if (!user || !token) {
+      return <PublicRoutes />;
     }
-    return <PublicRoutes />;
-  }, [user]);
+    return <PrivateRoutes />;
+  }, [user, token]);
 
   return (
     <NavigationContainer>
