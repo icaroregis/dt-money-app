@@ -24,7 +24,6 @@ export const RegisterForm = () => {
     },
     resolver: yupResolver(registerSchema),
   });
-  console.log(errors);
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>();
   const onSubmit = () => { }
 
