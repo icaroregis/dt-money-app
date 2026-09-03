@@ -2,9 +2,12 @@
 import { View } from "react-native";
 import { LoginForm } from "./LoginForm";
 import { AuthHeader } from "@/components/AuthHeader";
+import { useAuthContext } from "@/context/auth.context";
 import { DismissKeyboardView } from "@/components/DismissKeyboardView";
 
 export const Login = () => {
+  const { user } = useAuthContext();
+  console.log(user);
   return (
     <DismissKeyboardView>
       <View className="flex-1 w-full px-8 py-12 justify-center gap-16">
