@@ -5,7 +5,7 @@ import axios from 'axios';
 // Exemplo: 'http://192.168.1.15:3001'
 // Para achar seu IP no Linux, rode o comando `ip a` ou `hostname -I` no terminal.
 
-const baseURL = 'http://192.168.18.18:3001';
+const baseURL = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.18.18:3001';
 
 // Caso volte a usar emuladores, você pode descomentar o código abaixo:
 /*
