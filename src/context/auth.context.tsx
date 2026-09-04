@@ -35,7 +35,11 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
     setToken(token);
   }, []);
 
-  const handleLogout = useCallback(() => { }, []);
+  const handleLogout = useCallback(() => {
+    AsyncStorage.clear();
+    setUser(null);
+    setToken(null);
+  }, []);
 
   const restoreUserSession = useCallback(async () => {
     const data = await AsyncStorage.getItem("dt-money-data");
