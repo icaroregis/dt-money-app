@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AppError } from '../helpers/AppError';
 // import { Platform } from 'react-native';
 
 // Se estiver usando um DISPOSITIVO FÍSICO, substitua 'SEU_IP_AQUI' pelo IP local do seu computador na rede Wi-Fi.
@@ -19,3 +20,15 @@ const baseURL = Platform.select({
 export const dtMoneyApi = axios.create({
   baseURL,
 });
+
+dtMoneyApi.interceptors.request.use(
+  (config) => {
+    return config;
+  },
+  (error) => {
+    if (error.response && error.response.data.message) {
+      return Promise.reject(new AppError(error.response.data.message));
+    }
+    return Promise.reject(new AppError('Falha na requisição.'));
+  },
+);

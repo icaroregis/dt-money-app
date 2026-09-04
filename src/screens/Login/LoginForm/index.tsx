@@ -8,6 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuthContext } from "@/context/auth.context";
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { AppError } from "@/shared/helpers/AppError";
 
 export interface LoginFormValues {
   email: string;
@@ -31,10 +32,9 @@ export const LoginForm = () => {
     try {
       await handleAuthenticate(data);
     } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log("Erro Axios:", error.message, error.response?.data);
-      } else {
-        console.log("Erro genérico:", error);
+      console.log(error instanceof AppError);
+      if (error instanceof AppError) {
+        console.log(error.message);
       }
     }
   }
