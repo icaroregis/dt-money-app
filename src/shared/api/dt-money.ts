@@ -21,7 +21,7 @@ export const dtMoneyApi = axios.create({
   baseURL,
 });
 
-dtMoneyApi.interceptors.request.use(
+dtMoneyApi.interceptors.response.use(
   (config) => {
     return config;
   },

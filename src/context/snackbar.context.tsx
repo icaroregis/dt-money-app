@@ -3,6 +3,7 @@ import {
   FC,
   PropsWithChildren,
   useCallback,
+  useContext,
   useMemo,
   useState,
 } from 'react';
@@ -14,29 +15,33 @@ interface NotifyMessageParams {
 }
 
 type SnackbarContextType = {
+  messageType: SnackbarMessageType | null;
   message: string | null;
-  type: SnackbarMessageType | null;
   notify: (params: NotifyMessageParams) => void;
 }
 
-export const SnackbarContext = createContext<SnackbarContextType>({} as SnackbarContextType);
+export const SnackbarContext = createContext<SnackbarContextType>({
+  messageType: null,
+  message: null,
+  notify: () => undefined,
+});
 
 export const SnackbarContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [message, setMessage] = useState<string | null>(null);
-  const [type, setType] = useState<SnackbarMessageType | null>(null);
+  const [messageType, setMessageType] = useState<SnackbarMessageType | null>(null);
 
   const notify = useCallback((params: NotifyMessageParams) => {
     setMessage(params.message);
-    setType(params.messageType);
+    setMessageType(params.messageType);
     setTimeout(() => {
       setMessage(null);
-      setType(null);
+      setMessageType(null);
     }, 3000);
   }, []);
 
   const contextValue = useMemo(
-    () => ({ message, type, notify }),
-    [message, type, notify],
+    () => ({ messageType, message, notify }),
+    [messageType, message, notify],
   );
 
   return (
@@ -45,3 +50,5 @@ export const SnackbarContextProvider: FC<PropsWithChildren> = ({ children }) => 
     </SnackbarContext.Provider>
   );
 }
+
+export const useSnackbarContext = () => useContext(SnackbarContext);
