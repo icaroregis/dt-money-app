@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 import { useForm } from "react-hook-form";
 import { registerSchema } from "./schema";
 import { AppInput } from "@/components/AppInput";
@@ -8,6 +8,7 @@ import { useAuthContext } from "@/context/auth.context";
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
 import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { colors } from "@/shared/colors";
 
 export interface RegisterFormValues {
   name: string;
@@ -76,7 +77,7 @@ export const RegisterForm = () => {
         secureTextEntry
       />
       <View className="w-full flex-1 justify-between gap-4 mt-8 mb-6 min-h-[250px]">
-        <AppButton onPress={handleSubmit(onSubmit)} iconName="arrow-forward" >Cadastrar</AppButton>
+        <AppButton onPress={handleSubmit(onSubmit)} iconName="arrow-forward">{isSubmitting ? <ActivityIndicator color={colors.white} /> : "Cadastrar"}</AppButton>
         <View>
           <Text className="text-start text-base text-gray-300 mb-6">Já tem uma conta?</Text>
           <AppButton iconName="arrow-forward" mode="outline" onPress={() => navigation.goBack()}>Acessar</AppButton>

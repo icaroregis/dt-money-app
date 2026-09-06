@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 import { loginSchema } from "./schema";
 import { useForm } from "react-hook-form";
 import { AppInput } from "@/components/AppInput";
@@ -8,6 +8,7 @@ import { useAuthContext } from "@/context/auth.context";
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
 import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { colors } from "@/shared/colors";
 
 export interface LoginFormValues {
   email: string;
@@ -56,7 +57,7 @@ export const LoginForm = () => {
         secureTextEntry
       />
       <View className="w-full flex-1 justify-between gap-4 mt-8 mb-6 min-h-[250px]">
-        <AppButton onPress={handleSubmit(onSubmit)} iconName="arrow-forward">Logar</AppButton>
+        <AppButton onPress={handleSubmit(onSubmit)} iconName="arrow-forward">{isSubmitting ? <ActivityIndicator color={colors.white} /> : "Logar"}</AppButton>
         <View>
           <Text className="text-start text-base text-gray-300 mb-6">Ainda não tem uma conta?</Text>
           <AppButton iconName="arrow-forward" mode="outline" onPress={() => navigation.navigate("Register")}>Cadastrar</AppButton>
