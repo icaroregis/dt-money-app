@@ -4,10 +4,10 @@ import { registerSchema } from "./schema";
 import { AppInput } from "@/components/AppInput";
 import { AppButton } from "@/components/AppButton";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AxiosError } from "axios";
-import { PublicStackParamsList } from "@/routes/PublicRoutes";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { useAuthContext } from "@/context/auth.context";
+import { PublicStackParamsList } from "@/routes/PublicRoutes";
+import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 
 export interface RegisterFormValues {
   name: string;
@@ -28,6 +28,7 @@ export const RegisterForm = () => {
   });
 
   const { handleRegister } = useAuthContext();
+  const { handleError } = useErrorHandler();
 
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>();
 
@@ -35,11 +36,7 @@ export const RegisterForm = () => {
     try {
       await handleRegister(data);
     } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log("Erro Axios:", error.message, error.response?.data);
-      } else {
-        console.log("Erro genérico:", error);
-      }
+      handleError(error, "Erro ao cadastrar o usuário");
     }
   }
 

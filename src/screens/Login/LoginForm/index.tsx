@@ -3,11 +3,10 @@ import { loginSchema } from "./schema";
 import { useForm } from "react-hook-form";
 import { AppInput } from "@/components/AppInput";
 import { AppButton } from "@/components/AppButton";
-import { AppError } from "@/shared/helpers/AppError";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuthContext } from "@/context/auth.context";
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
-import { useSnackbarContext } from "@/context/snackbar.context";
+import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 
 export interface LoginFormValues {
@@ -25,7 +24,7 @@ export const LoginForm = () => {
   });
 
   const { handleAuthenticate } = useAuthContext();
-  const { notify } = useSnackbarContext();
+  const { handleError } = useErrorHandler();
 
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>();
 
@@ -33,10 +32,7 @@ export const LoginForm = () => {
     try {
       await handleAuthenticate(data);
     } catch (error) {
-      if (error instanceof AppError) {
-        notify({ messageType: "ERROR", message: error.message });
-        return;
-      }
+      handleError(error, "Erro ao logar");
     }
   }
 
