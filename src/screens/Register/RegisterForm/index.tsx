@@ -1,4 +1,5 @@
 import { ActivityIndicator, Text, View } from "react-native";
+import { colors } from "@/shared/colors";
 import { useForm } from "react-hook-form";
 import { registerSchema } from "./schema";
 import { AppInput } from "@/components/AppInput";
@@ -8,7 +9,6 @@ import { useAuthContext } from "@/context/auth.context";
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
 import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { colors } from "@/shared/colors";
 
 export interface RegisterFormValues {
   name: string;
