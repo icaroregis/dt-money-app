@@ -2,14 +2,11 @@ import { useAuthContext } from "@/context/auth.context";
 import { colors } from "@/shared/colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import { useBottomSheetContext } from "@/context/bottomSheet.context";
 
-type AppHeaderProps = {
-  onNewTransactionPress?: () => void;
-};
-
-export const AppHeader = ({ onNewTransactionPress }: AppHeaderProps) => {
+export const AppHeader = () => {
   const { handleLogout } = useAuthContext();
-  const isNewTransactionDisabled = !onNewTransactionPress;
+  const { openBottomSheet } = useBottomSheetContext();
 
   return (
     <View className="w-full flex-row items-center justify-between gap-4 px-4 py-6">
@@ -34,13 +31,12 @@ export const AppHeader = ({ onNewTransactionPress }: AppHeaderProps) => {
       <TouchableOpacity
         activeOpacity={0.85}
         accessibilityRole="button"
-        className="h-10 shrink-0 items-center justify-center rounded-[6px] bg-accent-brand px-4 disabled:opacity-60"
-        disabled={isNewTransactionDisabled}
-        onPress={onNewTransactionPress}
+        className="bg-accent-brand w-[130px] items-center justify-center rounded-xl h-[50px]"
+        onPress={() => {
+          openBottomSheet(<Text className="text-center text-red-700">Formulário da nova transação</Text>, 0);
+        }}
       >
-        <Text className="font-roboto text-[14px] font-bold leading-[22px] text-white">
-          Nova transação
-        </Text>
+        <Text className="text-white font-bold text-sm">Nova transação</Text>
       </TouchableOpacity>
     </View>
   );
