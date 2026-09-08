@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Control,
   Controller,
@@ -18,6 +18,7 @@ import { ErrorMessage } from '../ErrorMessage';
 import { AppModal } from '../AppModal';
 import { TransactionCategory } from '@/shared/interfaces/https/transaction-category-response';
 import { useTransactionStore } from '@/store/transaction.store';
+import { useErrorHandler } from '@/shared/hooks/useErrorHandler';
 
 interface CategorySelectParams<T extends FieldValues> {
   control: Control<T>;
@@ -33,13 +34,26 @@ export const CategorySelect = <T extends FieldValues>({
   placeholder = 'Selecione uma categoria',
 }: CategorySelectParams<T>) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { categories, fetchCategories } = useTransactionStore();
+  const { handleError } = useErrorHandler();
+
+  const loadCategories = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      await fetchCategories();
+    } catch (error) {
+      handleError(error, 'Erro ao carregar categorias');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [fetchCategories, handleError]);
 
   useEffect(() => {
     if (categories.length === 0) {
-      fetchCategories();
+      loadCategories();
     }
-  }, [categories.length, fetchCategories]);
+  }, [categories.length, loadCategories]);
 
   const getSelectedCategory = (
     selectedId: number | undefined | null,
@@ -116,15 +130,28 @@ export const CategorySelect = <T extends FieldValues>({
                   <View className="h-2" />
                 )}
                 ListEmptyComponent={
-                  <View className="py-12 items-center">
+                  <View className="py-12 items-center px-4">
                     <MaterialIcons
-                      name="category"
+                      name={isLoading ? 'hourglass-empty' : 'error-outline'}
                       size={40}
                       color={colors.gray['700']}
                     />
                     <Text className="text-gray-700 mt-3 text-base text-center">
-                      Carregando categorias...
+                      {isLoading
+                        ? 'Carregando categorias...'
+                        : 'Não foi possível carregar as categorias'}
                     </Text>
+                    {!isLoading && (
+                      <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={loadCategories}
+                        className="mt-6 px-5 py-3 rounded-xl bg-accent-brand/10 border-[1px] border-accent-brand"
+                      >
+                        <Text className="text-accent-brand font-bold text-base">
+                          Tentar novamente
+                        </Text>
+                      </TouchableOpacity>
+                    )}
                   </View>
                 }
                 renderItem={({ item }) => {

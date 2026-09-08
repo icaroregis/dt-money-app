@@ -1,7 +1,6 @@
-import axios, { InternalAxiosRequestConfig } from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import { AppError } from '../helpers/AppError';
-import { IAuthenticateResponse } from '../interfaces/https/authenticate-response';
+import { addTokenToRequest } from '../helpers/axios.helper';
 // import { Platform } from 'react-native';
 
 // Se estiver usando um DISPOSITIVO FÍSICO, substitua 'SEU_IP_AQUI' pelo IP local do seu computador na rede Wi-Fi.
@@ -23,26 +22,7 @@ export const dtMoneyApi = axios.create({
   baseURL,
 });
 
-const AUTH_STORAGE_KEY = process.env.EXPO_PUBLIC_AUTH_STORAGE_KEY;
-
-dtMoneyApi.interceptors.request.use(
-  async (config: InternalAxiosRequestConfig) => {
-    try {
-      const storedData = await AsyncStorage.getItem(AUTH_STORAGE_KEY);
-      if (storedData) {
-        const { token } = JSON.parse(storedData) as IAuthenticateResponse;
-        if (token && config.headers) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
-      }
-    } catch {
-      // ignora erros de leitura do storage
-    }
-    return config;
-  },
-  (error) => Promise.reject(error),
-);
-
+addTokenToRequest(dtMoneyApi);
 dtMoneyApi.interceptors.response.use(
   (config) => {
     return config;
