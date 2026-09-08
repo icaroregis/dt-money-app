@@ -1,15 +1,17 @@
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
-import { CreateTransactionRequest } from "@/shared/interfaces/https/create-transaction-request";
-import { MaterialIcons } from "@expo/vector-icons";
 import { colors } from "@/shared/colors";
 import { useForm } from "react-hook-form";
-import { AppInput } from "@/components/AppInput";
-import { AppButton } from "@/components/AppButton";
 import { newTransactionSchema } from "./schema";
+import { AppInput } from "@/components/AppInput";
+import { MaterialIcons } from "@expo/vector-icons";
+import { AppButton } from "@/components/AppButton";
+import { AppCurrencyInput } from "@/components/AppCurrencyInput";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useBottomSheetContext } from "@/context/bottomSheet.context";
-import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
 import { useSnackbarContext } from "@/context/snackbar.context";
+import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
+import { useBottomSheetContext } from "@/context/bottomSheet.context";
+import { TransactionTypeSelector } from "@/components/TransactionTypeSelector";
+import { CreateTransactionRequest } from "@/shared/interfaces/https/create-transaction-request";
 
 export type NewTransactionFormValues = CreateTransactionRequest;
 
@@ -56,13 +58,12 @@ export const NewTransaction = () => {
         placeholder="Ex: Almoço no restaurante"
         leftIconName="description"
       />
-      <AppInput
+      <AppCurrencyInput
         control={control}
-        name="typeId"
-        label="TIPO (1 - RECEITA / 2 - DESPESA)"
-        placeholder="Informe o tipo"
-        leftIconName="swap-horiz"
-        keyboardType="number-pad"
+        name="value"
+        label="PREÇO"
+        placeholder="R$ 0,00"
+        leftIconName="payments"
       />
       <AppInput
         control={control}
@@ -72,18 +73,15 @@ export const NewTransaction = () => {
         leftIconName="category"
         keyboardType="number-pad"
       />
-      <AppInput
+      <TransactionTypeSelector
         control={control}
-        name="value"
-        label="VALOR"
-        placeholder="0,00"
-        leftIconName="payments"
-        keyboardType="decimal-pad"
+        name="typeId"
+        label="TIPO"
       />
 
       <View className="w-full mt-8 mb-6">
         <AppButton onPress={handleSubmit(onSubmit)} iconName="arrow-forward">
-          {isSubmitting ? <ActivityIndicator color={colors.white} /> : "Criar transação"}
+          {isSubmitting ? <ActivityIndicator color={colors.white} /> : "Cadastrar"}
         </AppButton>
       </View>
     </View>
