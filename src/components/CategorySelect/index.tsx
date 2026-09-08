@@ -7,7 +7,6 @@ import {
 } from 'react-hook-form';
 import {
   FlatList,
-  Modal,
   Text,
   TouchableOpacity,
   View,
@@ -16,6 +15,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '@/shared/colors';
 import { cn } from '@/utils/cn';
 import { ErrorMessage } from '../ErrorMessage';
+import { AppModal } from '../AppModal';
 import { TransactionCategory } from '@/shared/interfaces/https/transaction-category-response';
 import { useTransactionStore } from '@/store/transaction.store';
 
@@ -100,108 +100,68 @@ export const CategorySelect = <T extends FieldValues>({
 
             {error && <ErrorMessage>{error.message}</ErrorMessage>}
 
-            <Modal
+            <AppModal
               visible={isOpen}
-              transparent
-              animationType="slide"
-              onRequestClose={() => setIsOpen(false)}
+              onClose={() => setIsOpen(false)}
+              title="Categorias"
             >
-              <TouchableOpacity
-                activeOpacity={1}
-                onPress={() => setIsOpen(false)}
-                className="flex-1 bg-black/60 justify-end"
-              >
-                <TouchableOpacity
-                  activeOpacity={1}
-                  className="bg-background-secondary rounded-t-3xl max-h-[70%]"
-                  onPress={(e) => e.stopPropagation()}
-                >
-                  <View className="w-full items-center pt-4 pb-2">
-                    <View className="w-14 h-1.5 bg-gray-700 rounded-full" />
-                  </View>
-
-                  <View className="px-6 pt-2 pb-6 flex-row items-center justify-between border-b-[1px] border-gray-600">
-                    <Text className="text-white text-xl font-bold">
-                      Categorias
+              <FlatList
+                data={categories}
+                keyExtractor={(item) => String(item.id)}
+                contentContainerStyle={{ padding: 16, }}
+                ItemSeparatorComponent={() => (
+                  <View className="h-2" />
+                )}
+                ListEmptyComponent={
+                  <View className="py-12 items-center">
+                    <MaterialIcons
+                      name="category"
+                      size={40}
+                      color={colors.gray['700']}
+                    />
+                    <Text className="text-gray-700 mt-3 text-base text-center">
+                      Carregando categorias...
                     </Text>
-                    <TouchableOpacity
-                      activeOpacity={0.7}
-                      hitSlop={{
-                        top: 12,
-                        bottom: 12,
-                        left: 12,
-                        right: 12,
-                      }}
-                      onPress={() => setIsOpen(false)}
-                    >
-                      <MaterialIcons
-                        name="close"
-                        size={20}
-                        color={colors.gray['700']}
-                      />
-                    </TouchableOpacity>
                   </View>
-
-                  <FlatList
-                    data={categories}
-                    keyExtractor={(item) => String(item.id)}
-                    className="max-h-[50%]"
-                    contentContainerStyle={{ padding: 16 }}
-                    ItemSeparatorComponent={() => (
-                      <View className="h-2" />
-                    )}
-                    ListEmptyComponent={
-                      <View className="py-12 items-center">
+                }
+                renderItem={({ item }) => {
+                  const isSelected = selected?.id === item.id;
+                  return (
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onPress={() => {
+                        onChange(item.id);
+                        setIsOpen(false);
+                      }}
+                      className={cn(
+                        'flex-row items-center justify-between px-5 py-4 rounded-xl border-[1px]',
+                        isSelected
+                          ? 'bg-accent-brand/10 border-accent-brand'
+                          : 'bg-background-tertiary border-transparent',
+                      )}
+                    >
+                      <Text
+                        className={cn(
+                          'text-base',
+                          isSelected
+                            ? 'text-accent-brand font-bold'
+                            : 'text-gray-500',
+                        )}
+                      >
+                        {item.name}
+                      </Text>
+                      {isSelected && (
                         <MaterialIcons
-                          name="category"
-                          size={40}
-                          color={colors.gray['700']}
+                          name="check"
+                          size={20}
+                          color={colors['accent-brand']}
                         />
-                        <Text className="text-gray-700 mt-3 text-base text-center">
-                          Carregando categorias...
-                        </Text>
-                      </View>
-                    }
-                    renderItem={({ item }) => {
-                      const isSelected = selected?.id === item.id;
-                      return (
-                        <TouchableOpacity
-                          activeOpacity={0.8}
-                          onPress={() => {
-                            onChange(item.id);
-                            setIsOpen(false);
-                          }}
-                          className={cn(
-                            'flex-row items-center justify-between px-5 py-4 rounded-xl border-[1px]',
-                            isSelected
-                              ? 'bg-accent-brand/10 border-accent-brand'
-                              : 'bg-background-tertiary border-transparent',
-                          )}
-                        >
-                          <Text
-                            className={cn(
-                              'text-base',
-                              isSelected
-                                ? 'text-accent-brand font-bold'
-                                : 'text-gray-500',
-                            )}
-                          >
-                            {item.name}
-                          </Text>
-                          {isSelected && (
-                            <MaterialIcons
-                              name="check"
-                              size={20}
-                              color={colors['accent-brand']}
-                            />
-                          )}
-                        </TouchableOpacity>
-                      );
-                    }}
-                  />
-                </TouchableOpacity>
-              </TouchableOpacity>
-            </Modal>
+                      )}
+                    </TouchableOpacity>
+                  );
+                }}
+              />
+            </AppModal>
           </View>
         );
       }}

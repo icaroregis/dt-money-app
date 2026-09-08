@@ -67,16 +67,16 @@ export const NewTransaction = () => {
         placeholder="R$ 0,00"
         leftIconName="payments"
       />
-      <TransactionTypeSelector
-        control={control}
-        name="typeId"
-        label="TIPO"
-      />
       <CategorySelect
         control={control}
         name="categoryId"
         label="CATEGORIA"
         placeholder="Selecione uma categoria"
+      />
+      <TransactionTypeSelector
+        control={control}
+        name="typeId"
+        label="TIPO"
       />
 
       <View className="w-full mt-8 mb-6">
