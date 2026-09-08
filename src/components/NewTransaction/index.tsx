@@ -5,10 +5,12 @@ import { newTransactionSchema } from "./schema";
 import { AppInput } from "@/components/AppInput";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AppButton } from "@/components/AppButton";
-import { AppCurrencyInput } from "@/components/AppCurrencyInput";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { CategorySelect } from "@/components/CategorySelect";
 import { useSnackbarContext } from "@/context/snackbar.context";
 import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
+import { AppCurrencyInput } from "@/components/AppCurrencyInput";
+import { TransactionType } from "@/shared/enums/transaction-type";
 import { useBottomSheetContext } from "@/context/bottomSheet.context";
 import { TransactionTypeSelector } from "@/components/TransactionTypeSelector";
 import { CreateTransactionRequest } from "@/shared/interfaces/https/create-transaction-request";
@@ -19,7 +21,7 @@ export const NewTransaction = () => {
   const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<NewTransactionFormValues>({
     defaultValues: {
       description: '',
-      typeId: 0,
+      typeId: 0 as unknown as TransactionType,
       categoryId: 0,
       value: 0,
     },
@@ -65,18 +67,16 @@ export const NewTransaction = () => {
         placeholder="R$ 0,00"
         leftIconName="payments"
       />
-      <AppInput
-        control={control}
-        name="categoryId"
-        label="CATEGORIA"
-        placeholder="Informe o código da categoria"
-        leftIconName="category"
-        keyboardType="number-pad"
-      />
       <TransactionTypeSelector
         control={control}
         name="typeId"
         label="TIPO"
+      />
+      <CategorySelect
+        control={control}
+        name="categoryId"
+        label="CATEGORIA"
+        placeholder="Selecione uma categoria"
       />
 
       <View className="w-full mt-8 mb-6">
