@@ -7,6 +7,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { AppButton } from "@/components/AppButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CategorySelect } from "@/components/CategorySelect";
+import { useTransactionStore } from "@/store/transaction.store";
 import { useSnackbarContext } from "@/context/snackbar.context";
 import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
 import { AppCurrencyInput } from "@/components/AppCurrencyInput";
@@ -18,12 +19,13 @@ import { CreateTransactionRequest } from "@/shared/interfaces/https/create-trans
 export type NewTransactionFormValues = CreateTransactionRequest;
 
 export const NewTransaction = () => {
-  const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<NewTransactionFormValues>({
+  const createTransaction = useTransactionStore((state) => state.createTransaction);
+  const { control, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<NewTransactionFormValues>({
     defaultValues: {
       description: '',
-      typeId: 0 as unknown as TransactionType,
-      categoryId: 0,
-      value: 0,
+      typeId: undefined as unknown as TransactionType,
+      categoryId: undefined as unknown as number,
+      value: undefined as unknown as number,
     },
     resolver: yupResolver(newTransactionSchema),
   });
@@ -34,8 +36,14 @@ export const NewTransaction = () => {
 
   const onSubmit = async (data: NewTransactionFormValues) => {
     try {
-      console.log("new transaction data", data);
+      await createTransaction({
+        description: data.description.trim(),
+        typeId: data.typeId,
+        categoryId: data.categoryId,
+        value: data.value,
+      });
       notify({ messageType: "SUCCESS", message: "Transação criada com sucesso!" });
+      reset();
       setTimeout(() => {
         closeBottomSheet();
       }, 600);

@@ -6,8 +6,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SnackbarContextProvider } from '@/context/snackbar.context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetContextProvider } from '@/context/bottomSheet.context';
-// import { DebugAsyncStorage } from '@/components/DebugAsyncStorage';
-
 export default function App() {
   return (
     <SafeAreaProvider>
