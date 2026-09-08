@@ -60,7 +60,7 @@ export const CategorySelect = <T extends FieldValues>({
     selectedId: number | undefined | null,
   ): TransactionCategory | undefined => {
     if (!selectedId) return undefined;
-    return categories.find((c) => c.id === selectedId);
+    return categories.find((category) => category.id === selectedId);
   };
 
   return (
