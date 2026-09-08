@@ -108,7 +108,10 @@ export const CategorySelect = <T extends FieldValues>({
               <FlatList
                 data={categories}
                 keyExtractor={(item) => String(item.id)}
-                contentContainerStyle={{ padding: 16, }}
+                contentContainerStyle={{
+                  paddingHorizontal: 16,
+                  flexGrow: 1,
+                }}
                 ItemSeparatorComponent={() => (
                   <View className="h-2" />
                 )}
