@@ -37,8 +37,8 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
     setToken(token);
   }, []);
 
-  const handleLogout = useCallback(() => {
-    AsyncStorage.clear();
+  const handleLogout = useCallback(async () => {
+    await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
     setUser(null);
     setToken(null);
   }, []);

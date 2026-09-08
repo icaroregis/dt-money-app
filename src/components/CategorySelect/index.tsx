@@ -35,7 +35,8 @@ export const CategorySelect = <T extends FieldValues>({
 }: CategorySelectParams<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { categories, fetchCategories } = useTransactionStore();
+  const categories = useTransactionStore((state) => state.categories);
+  const fetchCategories = useTransactionStore((state) => state.fetchCategories);
   const { handleError } = useErrorHandler();
 
   const loadCategories = useCallback(async () => {
