@@ -6,6 +6,8 @@ import * as AuthService from "@/shared/services/dt-money/auth.service";
 import { IAuthenticateResponse } from "@/shared/interfaces/https/authenticate-response";
 import { createContext, FC, PropsWithChildren, useState, useCallback, useMemo, useContext } from "react";
 
+const AUTH_STORAGE_KEY = process.env.EXPO_PUBLIC_AUTH_STORAGE_KEY || "dt-money-data";
+
 type AuthContextType = {
   user: IUser | null;
   token: string | null;
@@ -23,14 +25,14 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const handleAuthenticate = useCallback(async (params: LoginFormValues) => {
     const { user, token } = await AuthService.authenticate(params);
-    await AsyncStorage.setItem("dt-money-data", JSON.stringify({ user, token }));
+    await AsyncStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({ user, token }));
     setUser(user);
     setToken(token);
   }, []);
 
   const handleRegister = useCallback(async (params: RegisterFormValues) => {
     const { user, token } = await AuthService.registerUser(params);
-    await AsyncStorage.setItem("dt-money-data", JSON.stringify({ user, token }));
+    await AsyncStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({ user, token }));
     setUser(user);
     setToken(token);
   }, []);
@@ -42,7 +44,7 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   const restoreUserSession = useCallback(async () => {
-    const data = await AsyncStorage.getItem("dt-money-data");
+    const data = await AsyncStorage.getItem(AUTH_STORAGE_KEY);
     if (data) {
       const { user, token } = JSON.parse(data) as IAuthenticateResponse;
       setUser(user);
