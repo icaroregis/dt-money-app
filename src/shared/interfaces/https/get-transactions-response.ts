@@ -7,8 +7,8 @@ export interface TotalTransactionsSummary {
 }
 
 export interface GetTransactionsQueryParams {
-  page?: number;
-  perPage?: number;
+  page: number;
+  perPage: number;
   searchText?: string;
   typeId?: number;
   categoryIds?: number[];

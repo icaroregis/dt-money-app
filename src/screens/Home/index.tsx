@@ -1,12 +1,17 @@
-import { AppHeader } from "@/components/AppHeader";
-import { Text } from "react-native";
+import { ListHeader } from "./ListHeader";
+import { FlatList, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export const Home = () => {
+  
   return (
-    <SafeAreaView className="flex-1 bg-background-primary">
-      <AppHeader />
-      <Text className="px-4 text-white">Page Home</Text>
+    <SafeAreaView className="flex-1 bg-background-secondary">
+      <FlatList
+        data={[]}
+        renderItem={() => <></>}
+        ListHeaderComponent={ListHeader}
+        keyExtractor={(item) => item}
+      />
     </SafeAreaView>
   );
 };
