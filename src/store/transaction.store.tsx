@@ -42,13 +42,7 @@ const storeApi: StateCreator<TransactionState> = (set, get) => ({
   },
 
   fetchTransactions: async (params?: GetTransactionsQueryParams) => {
-    // Debug: descomente abaixo para confirmar que a action foi chamada e o que foi salvo no store
-    // console.log('[store.fetchTransactions] chamou com params:', params);
     const response = await transactionService.getTransactions(params);
-    // console.log('[store.fetchTransactions] salvar no estado:');
-    // console.log('  • transactions.length:', response.data?.length ?? 0);
-    // console.log('  • totalTransactions (revenue/expense/total):', response.totalTransactions);
-    // console.log('  • pagination:', { page: response.page, totalPages: response.totalPages, totalRows: response.totalRows });
     set({
       transactions: response.data,
       totalTransactions: response.totalTransactions,
