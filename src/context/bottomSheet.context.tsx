@@ -12,6 +12,7 @@ import {
 
 import { colors } from '@/shared/colors';
 import { TouchableWithoutFeedback, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
 interface BottomSheetContextType {
@@ -26,6 +27,7 @@ export const BottomSheetContextProvider: FC<PropsWithChildren> = ({ children }) 
   const [index, setIndex] = useState<number>(-1);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const { top, bottom } = useSafeAreaInsets();
   const snapPoints = ["70%", "80%"];
 
   const openBottomSheet = useCallback((newContent: ReactNode, index: number) => {
@@ -72,6 +74,8 @@ export const BottomSheetContextProvider: FC<PropsWithChildren> = ({ children }) 
           snapPoints={snapPoints}
           style={{ zIndex: 2 }}
           index={index}
+          topInset={top}
+          bottomInset={bottom}
           enablePanDownToClose
           onChange={handleSheetChanges}
           backgroundStyle={{
@@ -81,7 +85,9 @@ export const BottomSheetContextProvider: FC<PropsWithChildren> = ({ children }) 
             elevation: 9,
           }}
         >
-          <BottomSheetScrollView>{content}</BottomSheetScrollView>
+          <BottomSheetScrollView contentContainerStyle={{ paddingBottom: bottom }}>
+            {content}
+          </BottomSheetScrollView>
         </BottomSheet>
       )}
     </BottomSheetContext.Provider>

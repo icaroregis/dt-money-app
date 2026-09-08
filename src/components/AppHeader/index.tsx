@@ -3,6 +3,7 @@ import { colors } from "@/shared/colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useBottomSheetContext } from "@/context/bottomSheet.context";
+import { NewTransaction } from "../NewTransaction";
 
 export const AppHeader = () => {
   const { handleLogout } = useAuthContext();
@@ -33,7 +34,7 @@ export const AppHeader = () => {
         accessibilityRole="button"
         className="bg-accent-brand w-[130px] items-center justify-center rounded-xl h-[50px]"
         onPress={() => {
-          openBottomSheet(<Text className="text-center text-red-700">Formulário da nova transação</Text>, 0);
+          openBottomSheet(<NewTransaction />, 0);
         }}
       >
         <Text className="text-white font-bold text-sm">Nova transação</Text>
