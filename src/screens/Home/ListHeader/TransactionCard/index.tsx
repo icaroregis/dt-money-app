@@ -1,11 +1,10 @@
-import { TransactionType } from "@/components/TransactionTypeSelector";
-import { colors } from "@/shared/colors";
-import { MaterialIcons } from "@expo/vector-icons";
 import { FC } from "react";
+import { colors } from "@/shared/colors";
 import { Text, View } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { TransactionType } from "@/components/TransactionTypeSelector";
 
 type TransactionCardType = TransactionType | "total";
-
 interface Props {
   type: TransactionCardType;
   amount: number;
