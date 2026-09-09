@@ -38,3 +38,10 @@ export const formatDate = (
   if (!isoDate) return null;
   return new Date(isoDate).toLocaleDateString("pt-BR", options);
 };
+
+export const formatNumericDate = (isoDate?: string) =>
+  formatDate(isoDate, {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });

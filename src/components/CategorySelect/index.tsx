@@ -124,7 +124,6 @@ export const CategorySelect = <T extends FieldValues>({
                 data={categories}
                 keyExtractor={(item) => String(item.id)}
                 contentContainerStyle={{
-                  paddingHorizontal: 16,
                   flexGrow: 1,
                 }}
                 ItemSeparatorComponent={() => (

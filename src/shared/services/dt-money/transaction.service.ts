@@ -31,3 +31,7 @@ export const createTransaction = async (payload: CreateTransactionRequest): Prom
   const { data } = await dtMoneyApi.post<TransactionResponse>('/transaction', payload);
   return data;
 };
+
+export const deleteTransaction = async (id: number): Promise<void> => {
+  await dtMoneyApi.delete(`/transaction/${id}`);
+};

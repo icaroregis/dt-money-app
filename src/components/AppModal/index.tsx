@@ -57,16 +57,14 @@ export const AppModal: FC<AppModalProps> = ({
             className="w-full h-full flex-col"
           >
             {(title || showCloseButton) && (
-              <View className="px-6 py-5 flex-row items-center justify-between border-b-[1px] border-gray-600 flex-shrink-0">
-                <View className="flex-row items-center gap-2 flex-1 pr-3">
-                  {title ? (
-                    <Text className="text-white text-xl font-bold flex-1">
-                      {title}
-                    </Text>
-                  ) : (
-                    <View className="flex-1" />
-                  )}
-                </View>
+              <View className="px-6 pt-6 pb-2 flex-row items-center justify-between flex-shrink-0">
+                {title ? (
+                  <Text className="text-white text-xl font-bold flex-1 pr-3">
+                    {title}
+                  </Text>
+                ) : (
+                  <View className="flex-1 pr-3" />
+                )}
                 {showCloseButton && (
                   <TouchableOpacity
                     activeOpacity={0.7}
@@ -77,18 +75,17 @@ export const AppModal: FC<AppModalProps> = ({
                       right: 12,
                     }}
                     onPress={onClose}
-                    className="w-9 h-9 items-center justify-center rounded-full bg-background-tertiary flex-shrink-0"
                   >
                     <MaterialIcons
                       name="close"
                       size={20}
-                      color={colors.gray['500']}
+                      color={colors.gray['700']}
                     />
                   </TouchableOpacity>
                 )}
               </View>
             )}
-            <View className="flex-shrink min-h-0 px-2 py-4">
+            <View className="flex-shrink min-h-0 px-6 pb-6 pt-2">
               {children}
             </View>
           </TouchableOpacity>
