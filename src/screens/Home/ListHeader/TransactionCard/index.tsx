@@ -1,71 +1,17 @@
 import { FC } from "react";
-import { colors } from "@/shared/colors";
 import { Text, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { ICONS } from "./strategies/icon-strategy";
+import { formatCurrency, formatDate } from "@/utils/format";
+import { CARD_DATA } from "./strategies/card-data-strategy";
 import { TransactionType } from "@/components/TransactionTypeSelector";
 
-type TransactionCardType = TransactionType | "total";
+export type TransactionCardType = TransactionType | "total";
 interface Props {
   type: TransactionCardType;
   amount: number;
   lastTransactionDate?: string;
 }
-
-interface IconsData {
-  name: keyof typeof MaterialIcons.glyphMap;
-  color: string;
-}
-const ICONS: Record<TransactionCardType, IconsData> = {
-  [TransactionType.REVENUE]: {
-    color: colors["accent-brand-light"],
-    name: "arrow-circle-up",
-  },
-  [TransactionType.EXPENSE]: {
-    color: colors["accent-red"],
-    name: "arrow-circle-down",
-  },
-  total: {
-    color: colors.white,
-    name: "attach-money",
-  },
-};
-
-interface CardData {
-  label: string;
-  bgClass: string;
-  prefixLabel: string;
-}
-const CARD_DATA: Record<TransactionCardType, CardData> = {
-  [TransactionType.REVENUE]: {
-    label: "Entradas",
-    bgClass: "bg-background-tertiary",
-    prefixLabel: "Última entrada em",
-  },
-  [TransactionType.EXPENSE]: {
-    label: "Saídas",
-    bgClass: "bg-background-tertiary",
-    prefixLabel: "Última saída em",
-  },
-  total: {
-    label: "Total",
-    bgClass: "bg-accent-brand-background-primary",
-    prefixLabel: "Última transação em",
-  },
-};
-
-const formatCurrency = (value: number) =>
-  new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(value);
-
-const formatDate = (isoDate?: string) => {
-  if (!isoDate) return null;
-  return new Date(isoDate).toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "long",
-  });
-};
 
 export const TransactionCard: FC<Props> = ({
   type,
@@ -89,11 +35,14 @@ export const TransactionCard: FC<Props> = ({
         <Text className="text-2xl font-bold text-white">
           {formatCurrency(amount)}
         </Text>
-        <Text className="text-sm font-normal text-gray-700">
-          {formattedDate
-            ? `${cardData.prefixLabel} ${formattedDate}`
-            : `${cardData.prefixLabel} --`}
-        </Text>
+        {type !== "total" && (
+          <Text className="text-sm font-normal text-gray-700">
+            {formattedDate
+              ? `${cardData.prefixLabel} ${formattedDate}`
+              : "Nenhuma transação encontrada"
+            }
+          </Text>
+        )}
       </View>
     </View>
   );

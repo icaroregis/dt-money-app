@@ -23,7 +23,7 @@ export const ListHeader = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
           className="absolute h-[141]"
-          contentContainerClassName="pl-6 pr-6 gap-3"
+          contentContainerClassName="px-4 gap-3"
         >
           <TransactionCard
             type={TransactionType.REVENUE}
