@@ -1,9 +1,15 @@
 import { TransactionResponse } from './transaction-response';
 
-export interface TotalTransactionsSummary {
+export interface ApiTotalTransactionsSummary {
   revenue: number;
   expense: number;
   total: number;
+}
+
+export interface TotalTransactionsSummary extends ApiTotalTransactionsSummary {
+  lastRevenueDate?: string;
+  lastExpenseDate?: string;
+  lastTotalDate?: string;
 }
 
 export interface GetTransactionsQueryParams {
@@ -23,5 +29,5 @@ export interface GetTransactionsResponse {
   totalPages: number;
   page: number;
   perPage: number;
-  totalTransactions: TotalTransactionsSummary;
+  totalTransactions: ApiTotalTransactionsSummary;
 }

@@ -5,7 +5,15 @@ import { useTransactionStore } from "@/store/transaction.store";
 import { TransactionType } from "@/components/TransactionTypeSelector";
 
 export const ListHeader = () => {
-  const { revenue, expense, total } = useTransactionStore((state) => state.totalTransactions);
+  const {
+    revenue,
+    expense,
+    total,
+    lastRevenueDate,
+    lastExpenseDate,
+    lastTotalDate,
+  } = useTransactionStore((state) => state.totalTransactions);
+
   return (
     <>
       <AppHeader />
@@ -17,9 +25,21 @@ export const ListHeader = () => {
           className="absolute h-[141]"
           contentContainerClassName="pl-6 pr-6 gap-3"
         >
-          <TransactionCard type={TransactionType.REVENUE} amount={revenue} />
-          <TransactionCard type={"total"} amount={total} />
-          <TransactionCard type={TransactionType.EXPENSE} amount={expense} />
+          <TransactionCard
+            type={TransactionType.REVENUE}
+            amount={revenue}
+            lastTransactionDate={lastRevenueDate}
+          />
+          <TransactionCard
+            type={"total"}
+            amount={total}
+            lastTransactionDate={lastTotalDate}
+          />
+          <TransactionCard
+            type={TransactionType.EXPENSE}
+            amount={expense}
+            lastTransactionDate={lastExpenseDate}
+          />
         </ScrollView>
       </View>
     </>
