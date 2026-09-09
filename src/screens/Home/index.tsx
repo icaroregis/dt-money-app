@@ -58,6 +58,7 @@ export const Home = () => {
     <SafeAreaView className="flex-1 bg-background-primary">
       <FlatList
         className="bg-background-secondary"
+        ListHeaderComponent={ListHeader}
         data={transactions}
         keyExtractor={({ id }) => `transaction-${id}`}
         renderItem={({ item }) => (
@@ -67,9 +68,7 @@ export const Home = () => {
             onEdit={handleEditTransaction}
           />
         )}
-        ListHeaderComponent={ListHeader}
       />
-
       <DeleteTransactionModal
         visible={!!transactionToDelete}
         onClose={() => setTransactionToDelete(null)}
