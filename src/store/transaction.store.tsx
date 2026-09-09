@@ -58,11 +58,6 @@ const storeApi: StateCreator<TransactionState> = (set, get) => ({
   createTransaction: async (payload: CreateTransactionRequest) => {
     const newTransaction =
       await transactionService.createTransaction(payload);
-    // get() é uma API do Zustand que retorna a INSTÂNCIA ATUAL do store (state + actions).
-    // Usamos aqui para chamar a action irmã `fetchTransactions` que está definida no
-    // mesmo objeto retornado pela storeApi, e que não seria acessível diretamente
-    // por closure nesse escopo. Assim a lista e os totais são atualizados do zero
-    // após cada criação, garantindo sincronia com o backend.
     await get().fetchTransactions();
     return newTransaction;
   },
