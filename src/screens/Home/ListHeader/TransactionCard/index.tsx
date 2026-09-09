@@ -72,7 +72,6 @@ export const TransactionCard: FC<Props> = ({
   amount,
   lastTransactionDate,
 }) => {
-  console.log(lastTransactionDate)
   const iconData = ICONS[type];
   const cardData = CARD_DATA[type];
   const formattedDate = formatDate(lastTransactionDate);
