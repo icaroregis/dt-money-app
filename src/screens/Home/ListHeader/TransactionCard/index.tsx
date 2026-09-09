@@ -35,14 +35,14 @@ export const TransactionCard: FC<Props> = ({
         <Text className="text-2xl font-bold text-white">
           {formatCurrency(amount)}
         </Text>
-        {type !== "total" && (
-          <Text className="text-sm font-normal text-gray-700">
-            {formattedDate
-              ? `${cardData.prefixLabel} ${formattedDate}`
+        <Text className="text-sm font-normal text-gray-700">
+          {formattedDate
+            ? `${cardData.prefixLabel} ${formattedDate}`
+            : type === "total"
+              ? "Sem transações registradas"
               : "Nenhuma transação encontrada"
-            }
-          </Text>
-        )}
+          }
+        </Text>
       </View>
     </View>
   );

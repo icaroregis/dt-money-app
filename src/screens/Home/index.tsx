@@ -14,6 +14,8 @@ export const Home = () => {
   const fetchTransactions = useTransactionStore((state) => state.fetchTransactions);
   const { handleError } = useErrorHandler();
 
+  console.log("transactions", transactions);
+
   const loadTransactions = useCallback(async () => {
     try {
       setIsLoading(true);
