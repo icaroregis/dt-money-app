@@ -23,12 +23,7 @@ export const DeleteTransactionModal: FC<DeleteTransactionModalProps> = ({
       title="Excluir transação"
       showCloseButton
       animationType="fade"
-    >
-      <View className="gap-6">
-        <Text className="text-gray-300 text-base font-normal">
-          Tem certeza que deseja excluir esta transação? Essa ação não poderá ser desfeita.
-        </Text>
-
+      footer={
         <View className="flex-row gap-4">
           <View className="flex-1">
             <AppButton
@@ -51,7 +46,11 @@ export const DeleteTransactionModal: FC<DeleteTransactionModalProps> = ({
             </AppButton>
           </View>
         </View>
-      </View>
+      }
+    >
+      <Text className="text-gray-300 text-base font-normal">
+        Tem certeza que deseja excluir esta transação? Essa ação não poderá ser desfeita.
+      </Text>
     </AppModal>
   );
 };

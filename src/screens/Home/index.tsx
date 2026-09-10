@@ -5,8 +5,8 @@ import { TransactionCard } from "./TransactionCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTransactionStore } from "@/store/transaction.store";
 import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
-import { DeleteTransactionModal } from "./TransactionCard/DeleteTransactionModal";
 import { TransactionResponse } from "@/shared/interfaces/https/transaction-response";
+import { DeleteTransactionModal } from "./DeleteTransactionModal";
 
 export const Home = () => {
   const [isLoading, setIsLoading] = useState(false);

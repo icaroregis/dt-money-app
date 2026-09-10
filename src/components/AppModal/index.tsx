@@ -8,7 +8,7 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '@/shared/colors';
 import { cn } from '@/utils/cn';
-import { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren, ReactNode } from 'react';
 
 interface AppModalProps extends PropsWithChildren {
   visible: boolean;
@@ -18,6 +18,7 @@ interface AppModalProps extends PropsWithChildren {
   animationType?: ModalProps['animationType'];
   containerClassName?: string;
   contentClassName?: string;
+  footer?: ReactNode;
 }
 
 export const AppModal: FC<AppModalProps> = ({
@@ -28,6 +29,7 @@ export const AppModal: FC<AppModalProps> = ({
   animationType = 'fade',
   containerClassName,
   contentClassName,
+  footer,
   children,
 }) => {
   return (
@@ -47,17 +49,17 @@ export const AppModal: FC<AppModalProps> = ({
       >
         <View
           className={cn(
-            'w-full max-h-[50%] bg-background-secondary rounded-2xl overflow-hidden',
+            'w-full max-h-[80%] bg-background-secondary rounded-2xl overflow-hidden',
             contentClassName,
           )}
         >
           <TouchableOpacity
             activeOpacity={1}
             onPress={(e) => e.stopPropagation()}
-            className="w-full h-full flex-col"
+            className="w-full flex-col"
           >
             {(title || showCloseButton) && (
-              <View className="px-6 pt-6 pb-2 flex-row items-center justify-between flex-shrink-0">
+              <View className="px-6 py-5 flex-row items-center justify-between border-b-[1px] border-gray-600 flex-shrink-0">
                 {title ? (
                   <Text className="text-white text-xl font-bold flex-1 pr-3">
                     {title}
@@ -85,9 +87,14 @@ export const AppModal: FC<AppModalProps> = ({
                 )}
               </View>
             )}
-            <View className="flex-shrink min-h-0 px-6 pb-6 pt-2">
+            <View className="flex-shrink min-h-0 px-6 py-5">
               {children}
             </View>
+            {footer && (
+              <View className="px-6 py-5 border-t-[1px] border-gray-600 flex-shrink-0">
+                {footer}
+              </View>
+            )}
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
