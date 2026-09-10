@@ -20,6 +20,23 @@ const calculateTransactionSummary = (
   ...getLastTransactionDates(transactions),
 });
 
+const mergeTransactionsById = (
+  currentTransactions: TransactionResponse[],
+  nextTransactions: TransactionResponse[],
+) => {
+  const transactionsById = new Map<number, TransactionResponse>();
+
+  for (const transaction of currentTransactions) {
+    transactionsById.set(transaction.id, transaction);
+  }
+
+  for (const transaction of nextTransactions) {
+    transactionsById.set(transaction.id, transaction);
+  }
+
+  return Array.from(transactionsById.values());
+};
+
 export interface TransactionState {
   categories: TransactionCategory[];
   transactions: TransactionResponse[];
@@ -60,13 +77,23 @@ const storeApi: StateCreator<TransactionState> = (set, get) => ({
   },
 
   fetchTransactions: async (params?: GetTransactionsQueryParams) => {
-    const response = await transactionService.getTransactions(params);
+    const currentPagination = get().pagination;
+    const queryParams = params ?? {
+      page: 1,
+      perPage: currentPagination.perPage || 10,
+    };
+    const response = await transactionService.getTransactions(queryParams);
+    const shouldAppend = queryParams.page > 1;
+    const transactions = shouldAppend
+      ? mergeTransactionsById(get().transactions, response.data)
+      : response.data;
     const totalTransactions = calculateTransactionSummary(
       response.totalTransactions,
-      response.data
+      transactions
     );
+
     set({
-      transactions: response.data,
+      transactions,
       totalTransactions,
       pagination: {
         totalRows: response.totalRows,

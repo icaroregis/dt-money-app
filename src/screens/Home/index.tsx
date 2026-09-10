@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { FlatList } from "react-native";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ActivityIndicator, FlatList, View } from "react-native";
 import { ListHeader } from "./ListHeader";
 import { TransactionCard } from "./TransactionCard";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,26 +9,69 @@ import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
 import { DeleteTransactionModal } from "./DeleteTransactionModal";
 import { useBottomSheetContext } from "@/context/bottomSheet.context";
 import { TransactionResponse } from "@/shared/interfaces/https/transaction-response";
+import { colors } from "@/shared/colors";
+
+const TRANSACTIONS_PER_PAGE = 10;
 
 export const Home = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isDeletingTransaction, setIsDeletingTransaction] = useState(false);
+  const [isRefreshingTransactions, setIsRefreshingTransactions] = useState(false);
+  const [isLoadingMoreTransactions, setIsLoadingMoreTransactions] = useState(false);
   const [transactionToDelete, setTransactionToDelete] = useState<TransactionResponse | null>(null);
+  const isLoadingMoreRef = useRef(false);
   const transactions = useTransactionStore((state) => state.transactions);
+  const pagination = useTransactionStore((state) => state.pagination);
   const fetchTransactions = useTransactionStore((state) => state.fetchTransactions);
   const deleteTransaction = useTransactionStore((state) => state.deleteTransaction);
   const { handleError } = useErrorHandler();
   const { openBottomSheet } = useBottomSheetContext();
+  const hasMoreTransactions = pagination.page < pagination.totalPages;
 
   const loadTransactions = useCallback(async () => {
     try {
-      setIsLoading(true);
-      await fetchTransactions({ page: 1, perPage: 20 });
+      setIsRefreshingTransactions(true);
+      await fetchTransactions({ page: 1, perPage: TRANSACTIONS_PER_PAGE });
     } catch (error) {
       handleError(error, "Erro ao carregar transações");
     } finally {
-      setIsLoading(false);
+      setIsRefreshingTransactions(false);
     }
   }, [fetchTransactions, handleError]);
+
+  const loadMoreTransactions = useCallback(async () => {
+    if (
+      isLoadingMoreRef.current ||
+      isRefreshingTransactions ||
+      isDeletingTransaction ||
+      !transactions.length ||
+      !hasMoreTransactions
+    ) {
+      return;
+    }
+
+    try {
+      isLoadingMoreRef.current = true;
+      setIsLoadingMoreTransactions(true);
+      await fetchTransactions({
+        page: pagination.page + 1,
+        perPage: pagination.perPage || TRANSACTIONS_PER_PAGE,
+      });
+    } catch (error) {
+      handleError(error, "Erro ao carregar mais transações");
+    } finally {
+      isLoadingMoreRef.current = false;
+      setIsLoadingMoreTransactions(false);
+    }
+  }, [
+    fetchTransactions,
+    handleError,
+    hasMoreTransactions,
+    isDeletingTransaction,
+    isRefreshingTransactions,
+    pagination.page,
+    pagination.perPage,
+    transactions.length,
+  ]);
 
   const handleDeleteTransaction = useCallback((transaction: TransactionResponse) => {
     setTransactionToDelete(transaction);
@@ -38,13 +81,13 @@ export const Home = () => {
     if (!transactionToDelete) return;
 
     try {
-      setIsLoading(true);
+      setIsDeletingTransaction(true);
       await deleteTransaction(transactionToDelete.id);
       setTransactionToDelete(null);
     } catch (error) {
       handleError(error, "Erro ao excluir transação");
     } finally {
-      setIsLoading(false);
+      setIsDeletingTransaction(false);
     }
   }, [deleteTransaction, handleError, transactionToDelete]);
 
@@ -70,12 +113,19 @@ export const Home = () => {
             onEdit={handleEditTransaction}
           />
         )}
+        onEndReached={loadMoreTransactions}
+        onEndReachedThreshold={0.2}
+        ListFooterComponent={isLoadingMoreTransactions ? (
+          <View className="items-center py-6">
+            <ActivityIndicator color={colors.white} />
+          </View>
+        ) : null}
       />
       <DeleteTransactionModal
         visible={!!transactionToDelete}
         onClose={() => setTransactionToDelete(null)}
         onConfirm={confirmDeleteTransaction}
-        isLoading={isLoading}
+        isLoading={isDeletingTransaction}
       />
     </SafeAreaView>
   );
