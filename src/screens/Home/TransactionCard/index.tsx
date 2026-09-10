@@ -37,6 +37,8 @@ export const TransactionCard: FC<TransactionCardProps> = ({
       enableTrackpadTwoFingerGesture={false}
       renderLeftActions={() => <LeftAction transaction={transaction} onEdit={onEdit} />}
       renderRightActions={() => <RightAction transaction={transaction} onDelete={onDelete} />}
+      overshootLeft={false}
+      overshootRight={false}
     >
       <View className="bg-background-tertiary rounded-[6px] p-5 gap-3">
         <View className="gap-1">

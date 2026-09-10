@@ -1,9 +1,9 @@
-import { useAuthContext } from "@/context/auth.context";
 import { colors } from "@/shared/colors";
 import { MaterialIcons } from "@expo/vector-icons";
+import { NewTransaction } from "../NewTransaction";
+import { useAuthContext } from "@/context/auth.context";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useBottomSheetContext } from "@/context/bottomSheet.context";
-import { NewTransaction } from "../NewTransaction";
 
 export const AppHeader = () => {
   const { handleLogout } = useAuthContext();

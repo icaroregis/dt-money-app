@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
-import { FlatList, Alert } from "react-native";
+import { FlatList } from "react-native";
 import { ListHeader } from "./ListHeader";
 import { TransactionCard } from "./TransactionCard";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { EditTransaction } from "@/components/EditTransaction";
 import { useTransactionStore } from "@/store/transaction.store";
 import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
-import { TransactionResponse } from "@/shared/interfaces/https/transaction-response";
 import { DeleteTransactionModal } from "./DeleteTransactionModal";
+import { useBottomSheetContext } from "@/context/bottomSheet.context";
+import { TransactionResponse } from "@/shared/interfaces/https/transaction-response";
 
 export const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +17,7 @@ export const Home = () => {
   const fetchTransactions = useTransactionStore((state) => state.fetchTransactions);
   const deleteTransaction = useTransactionStore((state) => state.deleteTransaction);
   const { handleError } = useErrorHandler();
+  const { openBottomSheet } = useBottomSheetContext();
 
   const loadTransactions = useCallback(async () => {
     try {
@@ -46,9 +49,8 @@ export const Home = () => {
   }, [deleteTransaction, handleError, transactionToDelete]);
 
   const handleEditTransaction = useCallback((transaction: TransactionResponse) => {
-    // Navigate to edit screen or open modal
-    console.log("Edit transaction:", transaction.id);
-  }, []);
+    openBottomSheet(<EditTransaction transaction={transaction} />, 0);
+  }, [openBottomSheet]);
 
   useEffect(() => {
     loadTransactions();

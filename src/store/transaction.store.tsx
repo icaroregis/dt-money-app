@@ -33,6 +33,7 @@ export interface TransactionState {
   fetchCategories: () => Promise<void>;
   fetchTransactions: (params?: GetTransactionsQueryParams) => Promise<void>;
   createTransaction: (payload: CreateTransactionRequest) => Promise<TransactionResponse>;
+  updateTransaction: (id: number, payload: Partial<CreateTransactionRequest>) => Promise<TransactionResponse>;
   deleteTransaction: (id: number) => Promise<void>;
 }
 
@@ -81,6 +82,13 @@ const storeApi: StateCreator<TransactionState> = (set, get) => ({
       await transactionService.createTransaction(payload);
     await get().fetchTransactions();
     return newTransaction;
+  },
+
+  updateTransaction: async (id: number, payload: Partial<CreateTransactionRequest>) => {
+    const updatedTransaction =
+      await transactionService.updateTransaction(id, payload);
+    await get().fetchTransactions();
+    return updatedTransaction;
   },
 
   deleteTransaction: async (id: number) => {
