@@ -32,11 +32,18 @@ export const createTransaction = async (payload: CreateTransactionRequest): Prom
   return data;
 };
 
-export const updateTransaction = async (id: number, payload: Partial<CreateTransactionRequest>): Promise<TransactionResponse> => {
-  const { data } = await dtMoneyApi.put<TransactionResponse>(`/transaction/${id}`, payload);
+export const updateTransaction = async (
+  id: number,
+  payload: Partial<CreateTransactionRequest>,
+): Promise<TransactionResponse> => {
+  const { data } = await dtMoneyApi.put<TransactionResponse>('/transaction', {
+    ...payload,
+    id,
+  });
   return data;
 };
 
-export const deleteTransaction = async (id: number): Promise<void> => {
-  await dtMoneyApi.delete(`/transaction/${id}`);
+export const deleteTransaction = async (id: number): Promise<TransactionResponse> => {
+  const { data } = await dtMoneyApi.delete<TransactionResponse>(`/transaction/${id}`);
+  return data;
 };

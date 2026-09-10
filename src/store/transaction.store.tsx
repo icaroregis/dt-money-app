@@ -34,7 +34,7 @@ export interface TransactionState {
   fetchTransactions: (params?: GetTransactionsQueryParams) => Promise<void>;
   createTransaction: (payload: CreateTransactionRequest) => Promise<TransactionResponse>;
   updateTransaction: (id: number, payload: Partial<CreateTransactionRequest>) => Promise<TransactionResponse>;
-  deleteTransaction: (id: number) => Promise<void>;
+  deleteTransaction: (id: number) => Promise<TransactionResponse>;
 }
 
 const initialTotals: TotalTransactionsSummary = {
@@ -85,15 +85,17 @@ const storeApi: StateCreator<TransactionState> = (set, get) => ({
   },
 
   updateTransaction: async (id: number, payload: Partial<CreateTransactionRequest>) => {
-    const updatedTransaction =
+    const editedTransaction =
       await transactionService.updateTransaction(id, payload);
     await get().fetchTransactions();
-    return updatedTransaction;
+    return editedTransaction;
   },
 
   deleteTransaction: async (id: number) => {
-    await transactionService.deleteTransaction(id);
+    const deletedTransaction =
+      await transactionService.deleteTransaction(id);
     await get().fetchTransactions();
+    return deletedTransaction;
   },
 });
 

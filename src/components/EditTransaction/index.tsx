@@ -15,7 +15,6 @@ import { useBottomSheetContext } from "@/context/bottomSheet.context";
 import { TransactionTypeSelector } from "@/components/TransactionTypeSelector";
 import { CreateTransactionRequest } from "@/shared/interfaces/https/create-transaction-request";
 import { TransactionResponse } from "@/shared/interfaces/https/transaction-response";
-
 export type EditTransactionFormValues = CreateTransactionRequest;
 
 interface EditTransactionProps {
