@@ -1,4 +1,4 @@
-import { FC, useCallback, useRef } from "react";
+import { FC, memo, useCallback, useRef } from "react";
 import { cn } from "@/utils/cn";
 import { colors } from "@/shared/colors";
 import { LeftAction } from "./LeftAction";
@@ -14,7 +14,7 @@ interface SwipeableRef {
   close: () => void;
   openLeft: () => void;
   openRight: () => void;
-  reset: () => void;
+  reset: () => void
 }
 
 interface TransactionCardProps {
@@ -23,7 +23,7 @@ interface TransactionCardProps {
   onDelete?: (transaction: TransactionResponse) => void;
 }
 
-export const TransactionCard: FC<TransactionCardProps> = ({
+const TransactionCardComponent: FC<TransactionCardProps> = ({
   transaction,
   onEdit,
   onDelete,
@@ -100,3 +100,5 @@ export const TransactionCard: FC<TransactionCardProps> = ({
     </Swipeable>
   );
 };
+
+export const TransactionCard = memo(TransactionCardComponent);
