@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ActivityIndicator, FlatList, View } from "react-native";
+import { colors } from "@/shared/colors";
 import { ListHeader } from "./ListHeader";
 import { TransactionCard } from "./TransactionCard";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,7 +10,6 @@ import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
 import { DeleteTransactionModal } from "./DeleteTransactionModal";
 import { useBottomSheetContext } from "@/context/bottomSheet.context";
 import { TransactionResponse } from "@/shared/interfaces/https/transaction-response";
-import { colors } from "@/shared/colors";
 
 const TRANSACTIONS_PER_PAGE = 10;
 
