@@ -14,7 +14,6 @@ export const useHomeTransactions = ({
 }: UseHomeTransactionsParams = {}) => {
   const [isRefreshingTransactions, setIsRefreshingTransactions] = useState(false);
   const [isLoadingMoreTransactions, setIsLoadingMoreTransactions] = useState(false);
-  const isLoadingMoreRef = useRef(false);
   const { transactions, pagination, fetchTransactions } = useTransactionStore(
     useShallow((state) => ({
       transactions: state.transactions,
@@ -24,52 +23,76 @@ export const useHomeTransactions = ({
   );
   const { handleError } = useErrorHandler();
   const hasMoreTransactions = pagination.page < pagination.totalPages;
+  const stateRef = useRef({
+    isLoadingMore: false,
+    isRefreshing: false,
+    hasMore: false,
+    page: 0,
+    perPage: TRANSACTIONS_PER_PAGE,
+    shouldBlock: false,
+    hasTransactions: false,
+  });
 
-  const loadTransactions = useCallback(async () => {
-    try {
-      setIsRefreshingTransactions(true);
-      await fetchTransactions({ page: 1, perPage: TRANSACTIONS_PER_PAGE });
-    } catch (error) {
-      handleError(error, "Erro ao carregar transações");
-    } finally {
-      setIsRefreshingTransactions(false);
-    }
-  }, [fetchTransactions, handleError]);
-
-  const loadMoreTransactions = useCallback(async () => {
-    if (
-      isLoadingMoreRef.current ||
-      isRefreshingTransactions ||
-      shouldBlockLoadingMore ||
-      !transactions.length ||
-      !hasMoreTransactions
-    ) {
-      return;
-    }
-
-    try {
-      isLoadingMoreRef.current = true;
-      setIsLoadingMoreTransactions(true);
-      await fetchTransactions({
-        page: pagination.page + 1,
-        perPage: pagination.perPage || TRANSACTIONS_PER_PAGE,
-      });
-    } catch (error) {
-      handleError(error, "Erro ao carregar mais transações");
-    } finally {
-      isLoadingMoreRef.current = false;
-      setIsLoadingMoreTransactions(false);
-    }
+  useEffect(() => {
+    stateRef.current = {
+      isLoadingMore: isLoadingMoreTransactions,
+      isRefreshing: isRefreshingTransactions,
+      hasMore: hasMoreTransactions,
+      page: pagination.page,
+      perPage: pagination.perPage || TRANSACTIONS_PER_PAGE,
+      shouldBlock: shouldBlockLoadingMore,
+      hasTransactions: transactions.length > 0,
+    };
   }, [
-    fetchTransactions,
-    handleError,
     hasMoreTransactions,
+    isLoadingMoreTransactions,
     isRefreshingTransactions,
     pagination.page,
     pagination.perPage,
     shouldBlockLoadingMore,
     transactions.length,
   ]);
+
+  const loadTransactions = useCallback(async () => {
+    try {
+      stateRef.current.isRefreshing = true;
+      setIsRefreshingTransactions(true);
+      await fetchTransactions({ page: 1, perPage: TRANSACTIONS_PER_PAGE });
+    } catch (error) {
+      handleError(error, "Erro ao carregar transações");
+    } finally {
+      stateRef.current.isRefreshing = false;
+      setIsRefreshingTransactions(false);
+    }
+  }, [fetchTransactions, handleError]);
+
+  const loadMoreTransactions = useCallback(async () => {
+    const state = stateRef.current;
+
+    if (
+      state.isLoadingMore ||
+      state.isRefreshing ||
+      state.shouldBlock ||
+      !state.hasTransactions ||
+      !state.hasMore
+    ) {
+      return;
+    }
+
+    try {
+      stateRef.current.isLoadingMore = true;
+      setIsLoadingMoreTransactions(true);
+      await fetchTransactions({
+        page: state.page + 1,
+        perPage: state.perPage,
+      });
+    } catch (error) {
+      handleError(error, "Erro ao carregar mais transações");
+    } finally {
+      stateRef.current.isLoadingMore = false;
+      setIsLoadingMoreTransactions(false);
+    }
+  }, [fetchTransactions, handleError]);
 
   useEffect(() => {
     loadTransactions();

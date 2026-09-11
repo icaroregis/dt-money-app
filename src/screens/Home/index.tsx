@@ -1,5 +1,11 @@
 import { useCallback } from "react";
-import { ActivityIndicator, FlatList, ListRenderItemInfo, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  ListRenderItemInfo,
+  RefreshControl,
+  View,
+} from "react-native";
 import { colors } from "@/shared/colors";
 import { ListHeader } from "./ListHeader";
 import { TransactionCard } from "./TransactionCard";
@@ -24,7 +30,9 @@ export const Home = () => {
 
   const {
     transactions,
+    isRefreshingTransactions,
     isLoadingMoreTransactions,
+    loadTransactions,
     loadMoreTransactions,
   } = useHomeTransactions({
     shouldBlockLoadingMore: isDeletingTransaction,
@@ -58,6 +66,14 @@ export const Home = () => {
         initialNumToRender={10}
         maxToRenderPerBatch={10}
         windowSize={5}
+        refreshControl={(
+          <RefreshControl
+            refreshing={isRefreshingTransactions}
+            onRefresh={loadTransactions}
+            tintColor={colors.white}
+            colors={[colors.white]}
+          />
+        )}
         ListFooterComponent={isLoadingMoreTransactions ? (
           <View className="items-center py-6">
             <ActivityIndicator color={colors.white} />
